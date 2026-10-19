@@ -125,9 +125,32 @@ git push -u origin main
 
 `config/env.php` and uploaded logos are ignored by git, so no passwords are published.
 
-### 2. Deploy the site (free PHP hosts)
+### 2. Deploy the site (free)
 
-Recommended: **InfinityFree**, **AwardSpace**, or any cPanel host with PHP + MySQL.
+**Recommended: Render (Docker).** The PDF export shells out to headless
+**Chromium**, which shared PHP hosts (InfinityFree, AwardSpace) do not provide.
+The included `Dockerfile` installs Chromium, so the ZIP export works online.
+
+1. Create a free account at <https://render.com> and connect your GitHub repo.
+2. Create a **Web Service** -> choose the repo -> **Runtime: Docker**
+   (Render auto-detects `Dockerfile`; `render.yaml` can also set it up as a Blueprint).
+3. Pick the **Free** plan and add these **Environment Variables**:
+   `DB_HOST`, `DB_PORT`, `DB_NAME`, `DB_USER`, `DB_PASS`.
+4. Provide a MySQL database. Render has no free MySQL, so use a free provider
+   such as **TiDB Serverless**, **Railway**, **Aiven**, or **Clever Cloud**
+   and paste its connection details into the variables above.
+5. Import the schema into that database (TiDB/Railway console or phpMyAdmin):
+   run `database.sql`.
+6. Deploy. Render injects `$PORT` (the start script rebinds Apache) and the app
+   reads credentials from the environment - no `config/env.php` on the server.
+
+> The free Render plan sleeps after ~15 min idle, so the first visit cold-starts
+> (~30-50s). Uploaded logos live on the container's ephemeral disk and reset on
+> redeploy.
+
+**Simpler alternative (no PDF export): InfinityFree / AwardSpace.** Any cPanel
+host with PHP + MySQL works for viewing, editing, CSV and print backup - but not
+the PDF ZIP, because they cannot run Chromium.
 
 1. Sign up and create a **MySQL database** + user (note host, name, user, password).
 2. Upload the project files via the host's **File Manager** or FTP - into `public_html/`
@@ -138,13 +161,16 @@ Recommended: **InfinityFree**, **AwardSpace**, or any cPanel host with PHP + MyS
 6. Visit the site, log in, change the password, upload your logo.
 
 After that, updates are just: edit locally -> `git add . && git commit && git push`
--> upload the changed files to the host.
+-> redeploy (Render) or upload the changed files to the host.
 
 ## Project structure
 
 ```
 database.sql          Database schema + default settings
-config/env.php        Database credentials (copy from env.example.php)
+Dockerfile            PHP 8.3 + Apache + Chromium image for free hosting (Render)
+render.yaml           Render Blueprint (free web service + DB env vars)
+docker/start.sh       Rebinds Apache to Render's $PORT
+config/env.php        Database credentials (copy from env.example.php; env vars used in Docker)
 config/db.php         PDO connection
 includes/             Helpers, page header/footer
 index.php             Ticket list: search, filters, vehicle radios, duplicate, delete, export buttons

@@ -1,0 +1,21 @@
+services:
+  - type: web
+    name: trip-ticket
+    runtime: docker
+    dockerfilePath: ./Dockerfile
+    plan: free
+    healthCheckPath: /login.php
+    envVars:
+      # CHROME_PATH is baked into the image (/usr/bin/chromium).
+      # Database: point these at a free MySQL provider (TiDB Serverless,
+      # Railway, Aiven, Clever Cloud) - Render has no free MySQL.
+      - key: DB_HOST
+        sync: false
+      - key: DB_PORT
+        value: "3306"
+      - key: DB_NAME
+        value: trip_ticket
+      - key: DB_USER
+        sync: false
+      - key: DB_PASS
+        sync: false

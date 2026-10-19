@@ -9,7 +9,17 @@ ignore_user_abort(true);
 
 function pdf_find_chrome(): string
 {
+    $envPath = getenv('CHROME_PATH');
+    if ($envPath !== false && $envPath !== '' && is_file($envPath)) {
+        return $envPath;
+    }
     $candidates = [
+        // Linux (Docker / Render)
+        '/usr/bin/chromium',
+        '/usr/bin/chromium-browser',
+        '/usr/bin/google-chrome',
+        '/usr/bin/google-chrome-stable',
+        // Windows
         'C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe',
         'C:\\Program Files (x86)\\Google\\Chrome\\Application\\chrome.exe',
         'C:\\Program Files (x86)\\Microsoft\\Edge\\Application\\msedge.exe',
@@ -78,10 +88,11 @@ function pdf_inline_assets(string $html): string
 function pdf_render(string $chrome, string $htmlFile, string $pdfFile, string $profileDir, int $timeoutSec = 30): bool
 {
     @mkdir($profileDir, 0777, true);
+    $null = DIRECTORY_SEPARATOR === '\\' ? 'NUL' : '/dev/null';
     $descriptors = [
-        0 => ['file', 'NUL', 'r'],
-        1 => ['file', 'NUL', 'w'],
-        2 => ['file', 'NUL', 'w'],
+        0 => ['file', $null, 'r'],
+        1 => ['file', $null, 'w'],
+        2 => ['file', $null, 'w'],
     ];
     $cmd = [
         $chrome,
@@ -89,11 +100,13 @@ function pdf_render(string $chrome, string $htmlFile, string $pdfFile, string $p
         '--no-first-run',
         '--no-default-browser-check',
         '--disable-gpu',
+        '--no-sandbox',
+        '--disable-dev-shm-usage',
         '--no-pdf-header-footer',
         '--print-to-pdf-no-header',
         '--user-data-dir=' . $profileDir,
         '--print-to-pdf=' . $pdfFile,
-        'file:///' . str_replace('\\', '/', $htmlFile),
+        'file:///' . ltrim(str_replace('\\', '/', $htmlFile), '/'),
     ];
     $proc = @proc_open($cmd, $descriptors, $pipes, __DIR__);
     if (!is_resource($proc)) {

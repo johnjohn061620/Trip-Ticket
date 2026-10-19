@@ -1,0 +1,15 @@
+.git
+.gitignore
+*.md
+Thumbs.db
+.DS_Store
+
+# Local DB credentials must never enter the image.
+config/env.php
+
+# Local-only reference file (large standalone HTML mockup).
+Trip Ticket.html
+
+# User-uploaded logos (created at runtime on the server).
+assets/uploads/*
+!assets/uploads/.htaccess

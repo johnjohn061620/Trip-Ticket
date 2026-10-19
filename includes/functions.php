@@ -8,6 +8,17 @@ const UPLOAD_URL = 'assets/uploads';
 
 function get_env(): array
 {
+    // Production (Render/containers) supplies credentials via environment variables.
+    $fromEnv = getenv('DB_HOST');
+    if ($fromEnv !== false && $fromEnv !== '') {
+        return [
+            'db_host' => $fromEnv,
+            'db_port' => (int) (getenv('DB_PORT') ?: 3306),
+            'db_name' => (getenv('DB_NAME') ?: 'trip_ticket'),
+            'db_user' => (getenv('DB_USER') ?: 'root'),
+            'db_pass' => (getenv('DB_PASS') !== false ? getenv('DB_PASS') : ''),
+        ];
+    }
     $file = __DIR__ . '/../config/env.php';
     if (!is_file($file)) {
         http_response_code(500);

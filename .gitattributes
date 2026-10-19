@@ -1,0 +1,4 @@
+# Never store CRLF in scripts/Dockerfiles - Linux builds break on \r.
+*.sh text eol=lf
+Dockerfile text eol=lf
+.dockerignore text eol=lf
