@@ -1,0 +1,11 @@
+# Secrets / local environment
+config/env.php
+
+# Uploaded logos (users upload their own; keep the folder rule file)
+assets/uploads/*
+!assets/uploads/.htaccess
+
+# OS / editor noise
+Thumbs.db
+.DS_Store
+*.log

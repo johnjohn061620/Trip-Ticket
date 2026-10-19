@@ -1,0 +1,236 @@
+/* =========================================================
+   TICKET DOCUMENT - A4 Landscape print layout
+   ========================================================= */
+@page {
+  size: A4 landscape;
+  margin: 8mm;
+}
+
+.print-bar {
+  max-width: 1100px;
+  margin: 14px auto 6px;
+  padding: 0 16px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.print-bar .group { display: flex; gap: 8px; flex-wrap: wrap; }
+
+.ticket-form { margin: 0; }
+
+.a4-container {
+  width: 297mm;
+  height: 210mm;
+  background: #fff;
+  padding: 8mm 10mm 6mm 10mm;
+  margin: 0 auto 20px auto;
+  box-shadow: 0 0 10px rgba(0,0,0,0.15);
+  display: flex;
+  gap: 12px;
+  font-size: 10px;
+  line-height: 1.08;
+  color: #000;
+  font-family: Arial, "Helvetica Neue", sans-serif;
+}
+
+.left-col {
+  width: 49%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.right-col {
+  width: 51%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  border-left: 1px solid #ccc;
+  padding-left: 10px;
+}
+
+.a4-container input[type="text"],
+.a4-container input[type="number"],
+.a4-container select {
+  border: none;
+  border-bottom: 1px solid #000;
+  outline: none;
+  font-size: 10px;
+  font-family: inherit;
+  background: transparent;
+  padding: 0 3px;
+  color: #000;
+}
+
+.a4-container input.bold-val,
+.a4-container select.bold-val { font-weight: bold; }
+
+.section-head { font-weight: normal; font-size: 9.5px; margin-top: 2px; margin-bottom: 2px; }
+
+.form-row { display: flex; margin-bottom: 2px; align-items: baseline; gap: 4px; }
+.form-row label { white-space: nowrap; font-weight: normal; flex: 0 0 auto; }
+.form-row input,
+.form-row select { flex: 1 1 auto; width: auto; min-width: 40px; box-sizing: border-box; }
+.sub-item { padding-left: 16px; }
+.unit-tag { width: 45px; text-align: right; font-weight: normal; flex-shrink: 0; }
+
+/* Time of departure / return: time box + AM/PM choice sitting on the underline */
+.form-row.time-row input.time-text { flex: 1 1 auto; text-align: right; }
+.form-row.time-row select.ampm-select {
+  flex: 0 0 46px;
+  width: 46px;
+  min-width: 46px;
+  text-align: right;
+  padding-right: 0;
+  cursor: pointer;
+}
+
+.header-doc-code {
+  text-align: right;
+  font-size: 8px;
+  font-weight: bold;
+  margin-bottom: 2px;
+}
+
+.header-main {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  margin-bottom: 3px;
+}
+
+.logo-box {
+  position: absolute;
+  left: 5px;
+  top: 0;
+  width: 50px;
+  height: 50px;
+  display: flex;
+  align-items: center;
+}
+
+.logo-box img { max-width: 50px; max-height: 50px; }
+
+.header-text { text-align: center; font-size: 9px; }
+.header-text .title-agency { font-weight: bold; font-size: 9.5px; }
+.header-text .office-name { font-weight: bold; font-style: italic; font-size: 9.5px; }
+
+.doc-title {
+  text-align: center;
+  font-weight: bold;
+  font-size: 11px;
+  margin: 3px 0 5px 0;
+  text-decoration: underline;
+}
+
+.ticket-meta {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 4px;
+  font-size: 9.5px;
+}
+
+.approval-block {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 6px;
+  margin-bottom: 4px;
+}
+
+.sig-box { width: 48%; text-align: center; }
+
+.sig-line {
+  border-top: 1px solid #000;
+  margin-top: 14px;
+  padding-top: 1px;
+  font-weight: bold;
+  font-size: 9.5px;
+}
+
+.sig-sub { font-size: 8.5px; line-height: 1; }
+
+.certify-text { font-weight: bold; font-size: 8.5px; margin-top: 3px; margin-bottom: 2px; }
+
+.right-title { text-align: center; font-weight: bold; font-size: 11px; margin-bottom: 4px; }
+
+table.trip-log-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 8px;
+}
+
+table.trip-log-table th,
+table.trip-log-table td {
+  border: 1px solid #000;
+  text-align: center;
+  padding: 0;
+  height: 14px;
+}
+
+table.trip-log-table th { font-weight: bold; background-color: #fff; }
+
+table.trip-log-table input {
+  width: 100%;
+  height: 100%;
+  border: none !important;
+  text-align: center;
+  font-size: 8px;
+  background: transparent;
+}
+
+.attest-section {
+  display: flex;
+  justify-content: space-between;
+  font-weight: bold;
+  font-size: 9px;
+  margin-top: 4px;
+}
+
+.right-footer-cert { font-size: 8.5px; margin-top: 6px; }
+
+.bottom-line-sig {
+  margin-top: 12px;
+  border-bottom: 1px solid #000;
+  width: 100%;
+  text-align: center;
+  font-size: 8.5px;
+  padding-bottom: 1px;
+}
+
+/* On-screen guidance only - never printed */
+.screen-only {
+  display: inline-block;
+  margin-left: 6px;
+  font-size: 8.5px;
+  font-style: italic;
+  color: #666;
+  white-space: nowrap;
+}
+
+@media print {
+  .topbar, .no-print-bar, .print-bar, .site-footer, .alert { display: none !important; }
+  .screen-only, .no-print { display: none !important; }
+  body { background: #fff; }
+  .a4-container {
+    box-shadow: none;
+    margin: 0;
+    width: 100%;
+    height: 100vh;
+    padding: 0;
+  }
+  .a4-container input,
+  .a4-container select { border-bottom: none !important; }
+  .a4-container .calc-input { border-bottom: 1px solid #000 !important; }
+  /* Time of departure / return keep their underline on the printed form */
+  .a4-container .time-text,
+  .a4-container .ampm-select { border-bottom: 1px solid #000 !important; }
+  .a4-container input::placeholder { color: transparent !important; opacity: 0 !important; }
+}
+
+@media screen and (max-width: 1150px) {
+  .a4-container { transform-origin: top left; }
+}

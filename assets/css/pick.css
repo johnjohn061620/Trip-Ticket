@@ -1,0 +1,52 @@
+/* Vehicle chooser shown right after a driver logs in */
+.pick-wrap {
+  max-width: 720px;
+  margin: 40px auto 0;
+  text-align: center;
+}
+
+.pick-wrap h1 { margin-bottom: 4px; }
+
+.pick-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 16px;
+  margin: 26px 0 20px;
+}
+
+.pick-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 26px 18px;
+  border: 1px solid #c3ccd8;
+  border-radius: 10px;
+  background: #fff;
+  text-decoration: none;
+  color: var(--navy);
+  transition: border-color .15s, box-shadow .15s, transform .15s;
+}
+
+.pick-badge {
+  position: absolute;
+  top: 8px;
+  right: 10px;
+  font-size: 10.5px;
+  color: #667;
+  border: 1px solid #c3ccd8;
+  border-radius: 999px;
+  padding: 1px 7px;
+}
+
+.pick-card:hover {
+  border-color: var(--navy);
+  box-shadow: 0 4px 14px rgba(20, 45, 90, .12);
+  transform: translateY(-2px);
+}
+
+.pick-name { font-size: 20px; font-weight: bold; }
+.pick-plate { font-size: 15px; color: #333; }
+.pick-rate { font-size: 12.5px; color: #667; }
+
+.pick-cancel { display: inline-block; margin-top: 6px; font-size: 13.5px; }
