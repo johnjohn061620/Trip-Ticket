@@ -1,8 +1,9 @@
 FROM php:8.3-apache
 
 # Chromium powers the headless PDF export; fonts keep the output readable.
+# ca-certificates provides the TLS root bundle (used when DB_SSL_CA is set).
 RUN apt-get update \
-    && apt-get install -y --no-install-recommends chromium fonts-liberation \
+    && apt-get install -y --no-install-recommends chromium fonts-liberation ca-certificates \
     && rm -rf /var/lib/apt/lists/*
 
 # MySQL driver used by includes/functions.php + config/db.php

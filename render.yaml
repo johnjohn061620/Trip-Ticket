@@ -19,3 +19,6 @@ services:
         sync: false
       - key: DB_PASS
         sync: false
+      # TLS root bundle - required for TiDB Serverless and other MySQL clouds.
+      - key: DB_SSL_CA
+        value: /etc/ssl/certs/ca-certificates.crt

@@ -17,6 +17,9 @@ function get_env(): array
             'db_name' => (getenv('DB_NAME') ?: 'trip_ticket'),
             'db_user' => (getenv('DB_USER') ?: 'root'),
             'db_pass' => (getenv('DB_PASS') !== false ? getenv('DB_PASS') : ''),
+            // TiDB Serverless / Aiven / most free MySQL clouds require TLS.
+            // Point DB_SSL_CA at a CA bundle file (e.g. isrgrootx1.pem) to enable it.
+            'db_ssl_ca' => getenv('DB_SSL_CA') ?: '',
         ];
     }
     $file = __DIR__ . '/../config/env.php';

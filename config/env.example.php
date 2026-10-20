@@ -7,4 +7,7 @@ return [
     'db_name' => 'trip_ticket',
     'db_user' => 'root',
     'db_pass' => '',
+    // Optional: TLS CA bundle path for MySQL hosts that require SSL
+    // (e.g. TiDB Serverless: '/etc/ssl/certs/ca-certificates.crt').
+    'db_ssl_ca' => '',
 ];

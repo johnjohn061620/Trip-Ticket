@@ -135,7 +135,8 @@ The included `Dockerfile` installs Chromium, so the ZIP export works online.
 2. Create a **Web Service** -> choose the repo -> **Runtime: Docker**
    (Render auto-detects `Dockerfile`; `render.yaml` can also set it up as a Blueprint).
 3. Pick the **Free** plan and add these **Environment Variables**:
-   `DB_HOST`, `DB_PORT`, `DB_NAME`, `DB_USER`, `DB_PASS`.
+   `DB_HOST`, `DB_PORT` (TiDB uses `4000`), `DB_NAME`, `DB_USER`, `DB_PASS`.
+   TLS is enabled automatically via `DB_SSL_CA` (set in `render.yaml`).
 4. Provide a MySQL database. Render has no free MySQL, so use a free provider
    such as **TiDB Serverless**, **Railway**, **Aiven**, or **Clever Cloud**
    and paste its connection details into the variables above.

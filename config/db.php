@@ -16,12 +16,21 @@ function db(): PDO
         $env['db_name']
     );
 
+    $options = [
+        PDO::ATTR_ERRMODE            => PDO::ERRMODE_EXCEPTION,
+        PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
+        PDO::ATTR_EMULATE_PREPARES   => false,
+    ];
+
+    // TLS for MySQL clouds that require it (TiDB Serverless, Aiven, ...).
+    // DB_SSL_CA points at a CA bundle; the Docker image ships ca-certificates.crt
+    // which already contains the Let's Encrypt root TiDB uses.
+    if (!empty($env['db_ssl_ca']) && is_file($env['db_ssl_ca'])) {
+        $options[PDO::MYSQL_ATTR_SSL_CA] = $env['db_ssl_ca'];
+    }
+
     try {
-        $pdo = new PDO($dsn, $env['db_user'], $env['db_pass'], [
-            PDO::ATTR_ERRMODE            => PDO::ERRMODE_EXCEPTION,
-            PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
-            PDO::ATTR_EMULATE_PREPARES   => false,
-        ]);
+        $pdo = new PDO($dsn, $env['db_user'], $env['db_pass'], $options);
     } catch (PDOException $e) {
         http_response_code(500);
         exit('Database connection failed. Check config/env.php and make sure database.sql was imported. '
