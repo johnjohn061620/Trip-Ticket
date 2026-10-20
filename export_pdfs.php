@@ -63,6 +63,24 @@ function pdf_rrmdir(string $dir): void
     @rmdir($dir);
 }
 
+/**
+ * Headless Chrome does not run the page JS, so the print-only cleanup the
+ * browser does on beforeprint must be replicated here: empty date boxes would
+ * otherwise print their "mm/dd/yyyy" hint, and input placeholders ("00:00 AM")
+ * would print too. Both must stay blank on paper.
+ */
+function pdf_prepare_print_html(string $html): string
+{
+    return preg_replace_callback('/<input\b[^>]*>/i', function ($m) {
+        $tag = $m[0];
+        $tag = preg_replace('/\s+placeholder="[^"]*"/i', '', $tag);
+        if (preg_match('/\btype="date"/i', $tag) && !preg_match('/\bvalue="[^"]+"/i', $tag)) {
+            $tag = preg_replace('/\btype="date"/i', 'type="text"', $tag);
+        }
+        return $tag;
+    }, $html);
+}
+
 /** Turn the ticket page HTML into one self-contained file (no web server needed). */
 function pdf_inline_assets(string $html): string
 {
@@ -174,7 +192,7 @@ foreach ($pdfRows as $pdfIdx => $pdfRow) {
     }
     $htmlFile = $tmpBase . DIRECTORY_SEPARATOR . 'ticket_' . $id . '.html';
     $pdfFile = $tmpBase . DIRECTORY_SEPARATOR . 'ticket_' . $id . '.pdf';
-    file_put_contents($htmlFile, pdf_inline_assets($html));
+    file_put_contents($htmlFile, pdf_inline_assets(pdf_prepare_print_html($html)));
 
     if (pdf_render($chrome, $htmlFile, $pdfFile, $tmpBase . DIRECTORY_SEPARATOR . 'chrome_' . $pdfIdx)) {
         $local = sprintf(
